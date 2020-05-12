@@ -3,16 +3,16 @@
 [![DUB Package](https://img.shields.io/dub/v/dutils-data.svg)](https://code.dlang.org/packages/dutils-data)
 [![Posix Build Status](https://travis-ci.org/d-utils/data.svg?branch=master)](https://travis-ci.org/d-utils/data)
 
-Conversion between structs and BSON/JSON with validation
+Conversion between structs and BSON/JSON with validation.
+
+The repo contains a minified and changed version of the vibe.d JSON/BSON data module.
 
 ## example
 
     import std.stdio : writeln;
 
-    import vibe.data.json : Json;
-
     import dutils.validation.constraints : ValidateRequired, ValidateEmail;
-    import dutils.data.json : fromJson;
+    import dutils.data.json : JSON, populateFromJSON, serializeToJSON;
 
     struct Email {
       @ValidateRequired()
@@ -28,13 +28,19 @@ Conversion between structs and BSON/JSON with validation
       string body;
     }
 
-    auto data = Json([
-      "does not exists": Json(true),
-      "to": Json("anna@example.com"),
-      "body": Json("Some text")
-    ]);
+    void main() {
+      auto data = JSON([
+          "does not exists": JSON(true),
+          "to": JSON("anna@example.com"),
+          "body": JSON("Some text")
+          ]);
 
-    Email email;
-    fromJson(email, data);
+      Email email;
+      populateFromJSON(email, data);
 
-    writeln("email: ", email);
+      writeln("email: ", email);
+
+      auto json = serializeToJSON(email);
+
+      writeln("json: ", json);
+    }

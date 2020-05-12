@@ -53,7 +53,7 @@ private struct UdaSearchResult(alias UDA) {
 		`found` is boolean flag for having a valid find. `index` is integer index in
 		attribute list this UDA was found at.
  */
-template findNextUDA(alias UDA, alias Symbol, long idx, bool allow_types = false)
+private template findNextUDA(alias UDA, alias Symbol, long idx, bool allow_types = false)
 		if (!is(UDA)) {
 	import std.traits : isInstanceOf;
 	import std.typetuple : TypeTuple;
@@ -93,7 +93,7 @@ template findNextUDA(alias UDA, alias Symbol, long idx, bool allow_types = false
 	enum findNextUDA = extract!(idx, udaTuple[idx .. $]);
 }
 /// ditto
-template findNextUDA(UDA, alias Symbol, long idx, bool allow_types = false) {
+private template findNextUDA(UDA, alias Symbol, long idx, bool allow_types = false) {
 	import std.traits : isInstanceOf;
 	import std.typetuple : TypeTuple;
 
@@ -236,14 +236,4 @@ unittest {
 	alias Cmp = TypeTuple!(Attribute(21), Attribute(42), Attribute(84));
 	static assert(Cmp == UDATuple!(Attribute, symbol));
 	static assert(!is(UDATuple!(Attribute, wrong)));
-}
-
-/// Avoid repeating the same error message again and again.
-/// ----
-/// if (!__ctfe)
-///	assert(0, onlyAsUda!func);
-/// ----
-template onlyAsUda(string from /*= __FUNCTION__*/ ) {
-	// With default param, DMD think expression is void, even when writing 'enum string onlyAsUda = ...'
-	enum onlyAsUda = from ~ " must only be used as an attribute - not called as a runtime function.";
 }

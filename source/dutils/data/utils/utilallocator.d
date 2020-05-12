@@ -1,9 +1,6 @@
 module dutils.data.utils.utilallocator;
 
-public import stdx.allocator : allocatorObject, CAllocatorImpl, dispose,
-	expandArray, IAllocator, make, makeArray, shrinkArray, theAllocator;
-public import stdx.allocator.mallocator;
-public import stdx.allocator.building_blocks.affix_allocator;
+public import stdx.allocator : allocatorObject, IAllocator, theAllocator;
 
 // NOTE: this needs to be used instead of theAllocator due to Phobos issue 17564
 @property IAllocator vibeThreadAllocator() @safe nothrow @nogc {

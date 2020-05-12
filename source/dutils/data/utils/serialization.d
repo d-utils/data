@@ -188,13 +188,13 @@ unittest {
 
 	See_Also: `dutils.data.json.JSONSerializer`, `dutils.data.json.JSONStringSerializer`, `dutils.data.bson.BsonSerializer`
 */
-package auto serializeWithPolicy(Serializer, alias Policy, T, ARGS...)(auto ref T value, ARGS args) {
+private auto serializeWithPolicy(Serializer, alias Policy, T, ARGS...)(auto ref T value, ARGS args) {
 	auto serializer = Serializer(args);
 	serializeWithPolicy!(Serializer, Policy)(serializer, value);
 	return serializer.getSerializedResult();
 }
 /// ditto
-package void serializeWithPolicy(Serializer, alias Policy, T)(
+private void serializeWithPolicy(Serializer, alias Policy, T)(
 		ref Serializer serializer, auto ref T value) {
 	static if (is(typeof(serializer.beginWriteDocument!T())))
 		serializer.beginWriteDocument!T();
@@ -286,7 +286,7 @@ unittest {
 
 	See_Also: `dutils.data.json.JSONSerializer`, `dutils.data.json.JSONStringSerializer`, `dutils.data.bson.BsonSerializer`
 */
-package T deserializeWithPolicy(Serializer, alias Policy, T, ARGS...)(ARGS args) {
+private T deserializeWithPolicy(Serializer, alias Policy, T, ARGS...)(ARGS args) {
 	auto deserializer = Serializer(args);
 	return deserializeValueImpl!(Serializer, Policy).deserializeValue!T(deserializer);
 }
@@ -892,7 +892,7 @@ private template deserializeValueImpl(Serializer, alias Policy) {
 	underscore will automatically be stripped when determining a field
 	name.
 */
-package NameAttribute!Policy name(alias Policy = DefaultPolicy)(string name) {
+private NameAttribute!Policy name(alias Policy = DefaultPolicy)(string name) {
 	return NameAttribute!Policy(name);
 }
 ///
@@ -931,7 +931,7 @@ unittest {
 /**
 	Attribute for marking non-serialized fields.
 */
-package @property IgnoreAttribute!Policy ignore(alias Policy = DefaultPolicy)() {
+private @property IgnoreAttribute!Policy ignore(alias Policy = DefaultPolicy)() {
 	return IgnoreAttribute!Policy();
 }
 ///
@@ -957,7 +957,7 @@ unittest {
 /**
 	Attribute for forcing serialization of enum fields by name instead of by value.
 */
-package @property ByNameAttribute!Policy byName(alias Policy = DefaultPolicy)() {
+private @property ByNameAttribute!Policy byName(alias Policy = DefaultPolicy)() {
 	return ByNameAttribute!Policy();
 }
 ///
@@ -1018,7 +1018,7 @@ unittest {
 
 	Implicitly marks this as optional for deserialization. (Keeps the struct default value when not present in serialized value)
 */
-package @property EmbedNullableIgnoreNullAttribute!Policy embedNullable(alias Policy = DefaultPolicy)() {
+private @property EmbedNullableIgnoreNullAttribute!Policy embedNullable(alias Policy = DefaultPolicy)() {
 	return EmbedNullableIgnoreNullAttribute!Policy();
 }
 ///
@@ -1032,35 +1032,35 @@ unittest {
 }
 
 ///
-package enum FieldExistence {
+private enum FieldExistence {
 	missing,
 	exists,
 	defer
 }
 
 /// User defined attribute (not intended for direct use)
-package struct NameAttribute(alias POLICY) {
+private struct NameAttribute(alias POLICY) {
 	alias Policy = POLICY;
 	string name;
 }
 /// ditto
-package struct OptionalAttribute(alias POLICY) {
+private struct OptionalAttribute(alias POLICY) {
 	alias Policy = POLICY;
 }
 /// ditto
-package struct IgnoreAttribute(alias POLICY) {
+private struct IgnoreAttribute(alias POLICY) {
 	alias Policy = POLICY;
 }
 /// ditto
-package struct ByNameAttribute(alias POLICY) {
+private struct ByNameAttribute(alias POLICY) {
 	alias Policy = POLICY;
 }
 /// ditto
-package struct AsArrayAttribute(alias POLICY) {
+private struct AsArrayAttribute(alias POLICY) {
 	alias Policy = POLICY;
 }
 /// ditto
-package struct EmbedNullableIgnoreNullAttribute(alias POLICY) {
+private struct EmbedNullableIgnoreNullAttribute(alias POLICY) {
 	alias Policy = POLICY;
 }
 
@@ -1075,7 +1075,7 @@ package struct EmbedNullableIgnoreNullAttribute(alias POLICY) {
 	This trait has precedence over `isISOExtStringSerializable` and
 	`isStringSerializable`.
 */
-package template isCustomSerializable(T) {
+private template isCustomSerializable(T) {
 	enum bool isCustomSerializable = is(typeof(T.init.toRepresentation()))
 		&& is(typeof(T.fromRepresentation(T.init.toRepresentation())) == T);
 }
@@ -1110,7 +1110,7 @@ unittest {
 
 	This trait has precedence over `isStringSerializable`.
 */
-package template isISOExtStringSerializable(T) {
+private template isISOExtStringSerializable(T) {
 	enum bool isISOExtStringSerializable = is(typeof(T.init.toISOExtString()) : string)
 		&& is(typeof(T.fromISOExtString("")) : T);
 }
@@ -1171,7 +1171,7 @@ unittest {
 
 /** Default policy (performs no customization).
 */
-package template DefaultPolicy(T) {
+private template DefaultPolicy(T) {
 }
 
 /**
@@ -1188,7 +1188,7 @@ package template DefaultPolicy(T) {
 
 	See_Also: `dutils.data.utils.serialization.serializeWithPolicy`
 */
-package template isPolicySerializable(alias Policy, T) {
+private template isPolicySerializable(alias Policy, T) {
 	enum bool isPolicySerializable = is(typeof(Policy!T.toRepresentation(T.init)))
 		&& is(typeof(Policy!T.fromRepresentation(Policy!T.toRepresentation(T.init))) : T);
 }
@@ -1224,7 +1224,7 @@ unittest {
 
 	See_Also: `dutils.data.utils.serialization.serializeWithPolicy`
 */
-package template ChainedPolicy(alias Primary, Fallbacks...) {
+private template ChainedPolicy(alias Primary, Fallbacks...) {
 	static if (Fallbacks.length == 0) {
 		alias ChainedPolicy = Primary;
 	} else {

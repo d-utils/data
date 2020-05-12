@@ -9,8 +9,6 @@
 
 module dutils.data.utils.traits;
 
-import dutils.data.utils.typetuple;
-
 /**
 	Checks if given type is a getter function type
 
