@@ -9,9 +9,10 @@
 		"libasync": "0.8.6",
 		"libevent": "2.0.2+2.0.16",
 		"memutils": "1.0.4",
+		"mir-core": "0.2.2",
 		"mir-linux-kernel": "1.0.1",
 		"openssl": "1.1.6+1.0.1g",
-		"stdx-allocator": "2.77.5",
+		"stdx-allocator": "3.0.2",
 		"taggedalgebraic": "0.11.13",
 		"vibe-core": "1.9.1",
 		"vibe-d": "0.8.6"
