@@ -5,7 +5,7 @@
 	"copyright": "Copyright © 2020, Fredrik Söderström",
 	"dependencies": {
 		"dutils-validation": "~>1.1.0",
-		"stdx-allocator": "~>3.0.2"
+		"stdx-allocator": "~>2.77.0"
 	},
 	"description": "Convert structs to/from and JSON/BSON with validation",
 	"homepage": "https://github.com/d-utils/data",
