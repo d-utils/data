@@ -2235,9 +2235,6 @@ unittest {
   }
 
   ubyte[] toBSONData(T)(T v) {
-    /*static T tmp;
-	tmp = nativeToLittleEndian(v);
-	return cast(ubyte[])((&tmp)[0 .. 1]);*/
     if (__ctfe)
       return nativeToLittleEndian(v).dup;
     else {
@@ -2249,7 +2246,7 @@ unittest {
 
   T fromBSONData(T)(in ubyte[] v) {
     assert(v.length >= T.sizeof);
-    //return (cast(T[])v[0 .. T.sizeof])[0];
+
     ubyte[T.sizeof] vu = v[0 .. T.sizeof];
     return littleEndianToNative!T(vu);
   }
